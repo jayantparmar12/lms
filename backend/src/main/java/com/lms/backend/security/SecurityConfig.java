@@ -1,0 +1,46 @@
+package com.lms.backend.security;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+
+    private final PasswordEncoder passwordEncoder;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http){
+        return http
+                .formLogin(Customizer.withDefaults())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/courses").permitAll()
+                        .requestMatchers("/students").hasAnyRole("TEACHER", "ADMIN")
+                        .requestMatchers("/teachers").hasRole("ADMIN")
+                )
+                .build();
+    }
+
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//        UserDetails user1 = User
+//                .withUsername("jayant")
+//                .password(passwordEncoder.encode("parmar"))
+//                .roles("STUDENT")
+//                .build();
+//        UserDetails user2 = User
+//                .withUsername("admin")
+//                .password(passwordEncoder.encode("admin@"))
+//                .roles("ADMIN")
+//                .build();
+//        return new InMemoryUserDetailsManager(user1, user2);
+//    }
+
+}
