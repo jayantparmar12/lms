@@ -1,7 +1,13 @@
 package com.lms.backend.controller;
 
+import com.lms.backend.dto.LoginRequestDto;
+import com.lms.backend.dto.LoginResponseDto;
+import com.lms.backend.dto.SignupResponseDto;
 import com.lms.backend.security.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,4 +16,47 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto){
+        return ResponseEntity.ok(authService.login(loginRequestDto));
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<SignupResponseDto> signup(@RequestBody LoginRequestDto signupRequestDto){
+        return ResponseEntity.ok(authService.signup(signupRequestDto));
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
